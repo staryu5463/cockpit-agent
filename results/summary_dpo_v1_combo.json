@@ -1,0 +1,30 @@
+{
+  "test_combo": {
+    "overall": {
+      "n": 300,
+      "success": 0.81,
+      "state_ok": 0.81,
+      "finish_ok": 0.9767,
+      "side_effect_rate": 0.0033,
+      "false_done_rate": 0.1667,
+      "format_error_rate": 0.0,
+      "failed_calls_per_ep": 0.027,
+      "calls_per_ep": 6.103,
+      "sec_per_ep": 4.5017
+    },
+    "by_tier": {
+      "L5": {
+        "n": 300,
+        "success": 0.81,
+        "state_ok": 0.81,
+        "finish_ok": 0.9767,
+        "side_effect_rate": 0.0033,
+        "false_done_rate": 0.1667,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.027,
+        "calls_per_ep": 6.103,
+        "sec_per_ep": 4.5017
+      }
+    }
+  }
+}

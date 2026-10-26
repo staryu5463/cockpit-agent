@@ -1,0 +1,406 @@
+{
+  "dev": {
+    "overall": {
+      "n": 300,
+      "success": 0.88,
+      "state_ok": 0.8833,
+      "finish_ok": 0.97,
+      "side_effect_rate": 0.04,
+      "false_done_rate": 0.09,
+      "format_error_rate": 0.0,
+      "failed_calls_per_ep": 0.0,
+      "calls_per_ep": 3.49,
+      "sec_per_ep": 0.0002
+    },
+    "by_tier": {
+      "L1": {
+        "n": 42,
+        "success": 0.9286,
+        "state_ok": 0.9286,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0714,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 2.0,
+        "sec_per_ep": 0.0001
+      },
+      "L2": {
+        "n": 41,
+        "success": 0.9268,
+        "state_ok": 0.9268,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0732,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 3.0,
+        "sec_per_ep": 0.0001
+      },
+      "L3": {
+        "n": 61,
+        "success": 0.9508,
+        "state_ok": 0.9508,
+        "finish_ok": 0.9508,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 3.049,
+        "sec_per_ep": 0.0001
+      },
+      "L4": {
+        "n": 46,
+        "success": 0.8043,
+        "state_ok": 0.8043,
+        "finish_ok": 0.9565,
+        "side_effect_rate": 0.1522,
+        "false_done_rate": 0.1522,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 3.543,
+        "sec_per_ep": 0.0002
+      },
+      "L5": {
+        "n": 74,
+        "success": 0.7703,
+        "state_ok": 0.7703,
+        "finish_ok": 0.9595,
+        "side_effect_rate": 0.0676,
+        "false_done_rate": 0.1892,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 6.0,
+        "sec_per_ep": 0.0003
+      },
+      "chat": {
+        "n": 13,
+        "success": 0.9231,
+        "state_ok": 1.0,
+        "finish_ok": 0.9231,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 1.077,
+        "sec_per_ep": 0.0001
+      },
+      "clarify": {
+        "n": 10,
+        "success": 1.0,
+        "state_ok": 1.0,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 2.0,
+        "sec_per_ep": 0.0001
+      },
+      "unsupported": {
+        "n": 13,
+        "success": 1.0,
+        "state_ok": 1.0,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 1.0,
+        "sec_per_ep": 0.0
+      }
+    }
+  },
+  "test_id": {
+    "overall": {
+      "n": 300,
+      "success": 0.9233,
+      "state_ok": 0.9267,
+      "finish_ok": 0.98,
+      "side_effect_rate": 0.0233,
+      "false_done_rate": 0.0567,
+      "format_error_rate": 0.0,
+      "failed_calls_per_ep": 0.0,
+      "calls_per_ep": 3.363,
+      "sec_per_ep": 0.0002
+    },
+    "by_tier": {
+      "L1": {
+        "n": 44,
+        "success": 0.9545,
+        "state_ok": 0.9545,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0455,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 2.0,
+        "sec_per_ep": 0.0001
+      },
+      "L2": {
+        "n": 55,
+        "success": 0.9273,
+        "state_ok": 0.9273,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0727,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 3.0,
+        "sec_per_ep": 0.0001
+      },
+      "L3": {
+        "n": 64,
+        "success": 0.9531,
+        "state_ok": 0.9531,
+        "finish_ok": 0.9531,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 2.984,
+        "sec_per_ep": 0.0002
+      },
+      "L4": {
+        "n": 39,
+        "success": 0.8974,
+        "state_ok": 0.8974,
+        "finish_ok": 0.9744,
+        "side_effect_rate": 0.0513,
+        "false_done_rate": 0.0769,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 3.436,
+        "sec_per_ep": 0.0002
+      },
+      "L5": {
+        "n": 61,
+        "success": 0.8525,
+        "state_ok": 0.8525,
+        "finish_ok": 0.9836,
+        "side_effect_rate": 0.082,
+        "false_done_rate": 0.1311,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 6.18,
+        "sec_per_ep": 0.0003
+      },
+      "chat": {
+        "n": 8,
+        "success": 0.875,
+        "state_ok": 1.0,
+        "finish_ok": 0.875,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 1.125,
+        "sec_per_ep": 0.0001
+      },
+      "clarify": {
+        "n": 16,
+        "success": 1.0,
+        "state_ok": 1.0,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 2.0,
+        "sec_per_ep": 0.0001
+      },
+      "unsupported": {
+        "n": 13,
+        "success": 1.0,
+        "state_ok": 1.0,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 1.0,
+        "sec_per_ep": 0.0001
+      }
+    }
+  },
+  "test_expr": {
+    "overall": {
+      "n": 300,
+      "success": 0.2467,
+      "state_ok": 0.3033,
+      "finish_ok": 0.7,
+      "side_effect_rate": 0.29,
+      "false_done_rate": 0.4533,
+      "format_error_rate": 0.0,
+      "failed_calls_per_ep": 0.0,
+      "calls_per_ep": 2.98,
+      "sec_per_ep": 0.0001
+    },
+    "by_tier": {
+      "L1": {
+        "n": 46,
+        "success": 0.5,
+        "state_ok": 0.5,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.5,
+        "false_done_rate": 0.5,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 2.891,
+        "sec_per_ep": 0.0001
+      },
+      "L2": {
+        "n": 37,
+        "success": 0.1892,
+        "state_ok": 0.1892,
+        "finish_ok": 0.973,
+        "side_effect_rate": 0.7568,
+        "false_done_rate": 0.7838,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 4.568,
+        "sec_per_ep": 0.0002
+      },
+      "L3": {
+        "n": 71,
+        "success": 0.0,
+        "state_ok": 0.0,
+        "finish_ok": 0.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 1.0,
+        "sec_per_ep": 0.0001
+      },
+      "L4": {
+        "n": 47,
+        "success": 0.4468,
+        "state_ok": 0.4468,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.2766,
+        "false_done_rate": 0.5532,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 4.17,
+        "sec_per_ep": 0.0002
+      },
+      "L5": {
+        "n": 59,
+        "success": 0.0,
+        "state_ok": 0.0,
+        "finish_ok": 0.9831,
+        "side_effect_rate": 0.3898,
+        "false_done_rate": 0.9831,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 4.831,
+        "sec_per_ep": 0.0002
+      },
+      "chat": {
+        "n": 12,
+        "success": 1.0,
+        "state_ok": 1.0,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 1.0,
+        "sec_per_ep": 0.0
+      },
+      "clarify": {
+        "n": 17,
+        "success": 0.0,
+        "state_ok": 1.0,
+        "finish_ok": 0.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 1.0,
+        "sec_per_ep": 0.0
+      },
+      "unsupported": {
+        "n": 11,
+        "success": 1.0,
+        "state_ok": 1.0,
+        "finish_ok": 1.0,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 1.0,
+        "sec_per_ep": 0.0001
+      }
+    }
+  },
+  "test_entity": {
+    "overall": {
+      "n": 300,
+      "success": 0.8867,
+      "state_ok": 0.8867,
+      "finish_ok": 0.9733,
+      "side_effect_rate": 0.05,
+      "false_done_rate": 0.0867,
+      "format_error_rate": 0.0,
+      "failed_calls_per_ep": 0.0,
+      "calls_per_ep": 4.533,
+      "sec_per_ep": 0.0002
+    },
+    "by_tier": {
+      "L3": {
+        "n": 155,
+        "success": 0.9548,
+        "state_ok": 0.9548,
+        "finish_ok": 0.9548,
+        "side_effect_rate": 0.0,
+        "false_done_rate": 0.0,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 3.058,
+        "sec_per_ep": 0.0001
+      },
+      "L5": {
+        "n": 145,
+        "success": 0.8138,
+        "state_ok": 0.8138,
+        "finish_ok": 0.9931,
+        "side_effect_rate": 0.1034,
+        "false_done_rate": 0.1793,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 6.11,
+        "sec_per_ep": 0.0003
+      }
+    }
+  },
+  "test_combo": {
+    "overall": {
+      "n": 300,
+      "success": 0.8467,
+      "state_ok": 0.8467,
+      "finish_ok": 0.97,
+      "side_effect_rate": 0.05,
+      "false_done_rate": 0.1233,
+      "format_error_rate": 0.0,
+      "failed_calls_per_ep": 0.0,
+      "calls_per_ep": 6.197,
+      "sec_per_ep": 0.0003
+    },
+    "by_tier": {
+      "L5": {
+        "n": 300,
+        "success": 0.8467,
+        "state_ok": 0.8467,
+        "finish_ok": 0.97,
+        "side_effect_rate": 0.05,
+        "false_done_rate": 0.1233,
+        "format_error_rate": 0.0,
+        "failed_calls_per_ep": 0.0,
+        "calls_per_ep": 6.197,
+        "sec_per_ep": 0.0003
+      }
+    }
+  }
+}
