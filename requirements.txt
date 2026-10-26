@@ -1,0 +1,6 @@
+# Core (environment, data, baselines, evaluation): standard library only.
+# Training (SFT / GRPO with the built-in LoRA):
+torch>=2.3
+transformers>=4.51
+# Serving / latency experiments (Linux or WSL2 only):
+# vllm
