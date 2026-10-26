@@ -1,0 +1,21 @@
+{
+  "model": "models/Qwen3-0.6B",
+  "train_file": "data/train.jsonl",
+  "dev_file": "data/dev.jsonl",
+  "output_dir": "runs/sft_qwen3_0.6b",
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "lr": 0.0002,
+  "epochs": 1,
+  "batch_size": 1,
+  "grad_accum": 16,
+  "warmup_steps": 20,
+  "max_len": 2048,
+  "max_dev": 200,
+  "gradient_checkpointing": true,
+  "dtype": "bfloat16",
+  "device": "cuda",
+  "seed": 0,
+  "log_every": 5,
+  "_note": "probe on RTX 4070 Laptop 8GB: batch 2 peaked at ~7.9GB incl. desktop usage; batch 1 x accum 16 keeps the same effective batch with more headroom. ~1.75 s per sequence -> 3000 examples x 1 epoch ~ 1.5 h."
+}

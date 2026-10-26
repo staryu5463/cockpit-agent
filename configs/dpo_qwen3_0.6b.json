@@ -1,0 +1,10 @@
+{
+  "model": "models/Qwen3-0.6B",
+  "init_lora": "runs/sft_qwen3_0.6b/lora.pt",
+  "pairs_file": "data/pairs_r1.jsonl",
+  "output_dir": "runs/dpo_qwen3_0.6b",
+  "lora_r": 16, "lora_alpha": 32,
+  "beta": 0.1, "lr": 5e-6, "epochs": 1, "micro_batch": 1, "grad_accum": 8,
+  "max_len": 3072, "gradient_checkpointing": true,
+  "dtype": "bfloat16", "device": "cuda", "seed": 0
+}

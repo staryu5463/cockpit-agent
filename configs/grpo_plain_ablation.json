@@ -1,0 +1,5 @@
+{
+  "_comment": "Original GRPO settings for the DAPO ablation: symmetric clip, KL on, sequence-level loss, no dynamic sampling. Use with --override to change one switch at a time.",
+  "clip_low": 0.2, "clip_high": 0.2, "beta_kl": 0.04,
+  "loss_agg": "seq", "dynamic_sampling": false, "truncation": "keep"
+}

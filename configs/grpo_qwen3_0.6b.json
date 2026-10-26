@@ -1,0 +1,15 @@
+{
+  "model": "models/Qwen3-0.6B",
+  "init_lora": "runs/sft_qwen3_0.6b/lora.pt",
+  "train_file": "data/train.jsonl",
+  "output_dir": "runs/grpo_qwen3_0.6b",
+  "lora_r": 16, "lora_alpha": 32,
+  "group_size": 8, "prompts_per_step": 4, "steps": 200, "lr": 1e-5,
+  "clip_low": 0.2, "clip_high": 0.28, "beta_kl": 0.0,
+  "loss_agg": "token", "std_norm": true, "dynamic_sampling": true, "truncation": "filter",
+  "ppo_epochs": 1, "micro_batch": 2, "max_len": 3072,
+  "temperature": 1.0, "max_new_tokens": 256,
+  "reward_weights": {"success": 1.0, "format": 0.1, "steps": 0.05, "side": 0.2},
+  "tiers": null, "save_every": 25, "gradient_checkpointing": true,
+  "dtype": "bfloat16", "device": "cuda", "seed": 0
+}
