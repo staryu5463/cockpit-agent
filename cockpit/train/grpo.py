@@ -71,7 +71,7 @@ class GRPOTrainer:
         if c["tiers"]:
             tasks = [t for t in tasks if t["tier"] in c["tiers"]]
         self.tasks = tasks
-        self._expert_calls = {}
+        self._expert_calls, self._expert_turns = {}, {}
         self.log = open(self.out / "log.jsonl", "a", encoding="utf-8")
         self.policy = HFPolicy(self.model, self.fmt, temperature=c["temperature"], top_p=c["top_p"],
                                max_new_tokens=c["max_new_tokens"])
@@ -82,12 +82,19 @@ class GRPOTrainer:
             self._expert_calls[task["id"]] = run_episode(task, ExpertPolicy())["verify"]["n_calls"]
         return self._expert_calls[task["id"]]
 
+    def expert_turns(self, task):
+        """Fewest turns the fair expert needs (parallel schedule when COCKPIT_PARALLEL=1)."""
+        if task["id"] not in self._expert_turns:
+            self._expert_turns[task["id"]] = run_episode(task, ExpertPolicy())["verify"]["turns"]
+        return self._expert_turns[task["id"]]
+
     def rollout_group(self, task):
         """G rollouts of one task, generated in lock-step batches (batch_runner)."""
         self.model.eval()
         group = run_episodes_batch([task] * self.cfg["group_size"], self.policy)
         for res in group:
-            res["reward"] = compute_reward(res["verify"], self.expert_calls(task), self.cfg["reward_weights"])
+            res["reward"] = compute_reward(res["verify"], self.expert_calls(task), self.cfg["reward_weights"],
+                                           self.expert_turns(task))
         return group
 
     def collect(self):

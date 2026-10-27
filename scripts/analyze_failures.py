@@ -35,14 +35,18 @@ ORDER = ["format", "hallucinated_id", "skipped_read", "bad_args", "no_retry", "w
 
 def calls(ep):
     """[(name, args, result)] from the logged messages."""
+    from cockpit.agent.format import parse_tool_calls
     out, pending = [], None
     for m in ep["messages"]:
         if m["role"] == "assistant":
-            from cockpit.agent.format import parse_tool_call
-            n, a, err = parse_tool_call(m["content"])
-            pending = (n, a) if not err else ("<format>", None)
+            parsed = parse_tool_calls(m["content"]) or [(None, None, "no call")]
+            pending = [(n, a) if not err else ("<format>", None) for n, a, err in parsed]
         elif m["role"] == "tool" and pending:
-            out.append((pending[0], pending[1], json.loads(m["content"])))
+            res = json.loads(m["content"])
+            res = res if isinstance(res, list) else [res]          # parallel turns return a list
+            if len(res) != len(pending):                          # single-call mode or rejected turn
+                pending, res = pending[:1], res[:1]
+            out += [(n, a, r) for (n, a), r in zip(pending, res)]
             pending = None
     return out
 

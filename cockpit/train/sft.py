@@ -24,10 +24,14 @@ from cockpit.train.common import assistant_prefix_for, load_model, pad_batch
 from cockpit.train.lora import apply_lora, count_trainable, lora_parameters, lora_state_dict
 
 
-def build_examples(tasks, fmt, max_len):
+def build_examples(tasks, fmt, max_len, parallel_share=1.0):
+    """Expert trajectories. With COCKPIT_PARALLEL=1, `parallel_share` of the tasks (fixed per
+    task id) use the parallel schedule and the rest one call per turn."""
+    from cockpit.agent import format as F
     ex, skipped = [], 0
     for t in tasks:
-        res = run_episode(t, ExpertPolicy())
+        par = F.PARALLEL and random.Random(t["id"]).random() < parallel_share
+        res = run_episode(t, ExpertPolicy(parallel=par))
         if not res["verify"]["success"]:
             skipped += 1
             continue
@@ -59,8 +63,9 @@ def main(cfg):
 
     train_tasks = load_split(cfg["train_file"])[: cfg.get("max_train", None)]
     dev_tasks = load_split(cfg["dev_file"])[: cfg.get("max_dev", 200)]
-    train, sk = build_examples(train_tasks, fmt, cfg.get("max_len", 2048))
-    dev, _ = build_examples(dev_tasks, fmt, cfg.get("max_len", 2048))
+    share = cfg.get("parallel_share", 1.0)
+    train, sk = build_examples(train_tasks, fmt, cfg.get("max_len", 2048), share)
+    dev, _ = build_examples(dev_tasks, fmt, cfg.get("max_len", 2048), share)
     print(f"train examples {len(train)} (skipped {sk}), dev {len(dev)}")
 
     opt = torch.optim.AdamW(lora_parameters(model), lr=cfg.get("lr", 2e-4), weight_decay=0.0)

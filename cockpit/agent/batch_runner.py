@@ -11,14 +11,11 @@ policies keep per-episode state, so they fall back to `run_episode`.
 """
 from __future__ import annotations
 
-import json
 import time
 
 from cockpit import spec
-from cockpit.agent.format import parse_tool_call
-from cockpit.agent.runner import initial_messages, run_episode
+from cockpit.agent.runner import execute_turn, finalize, initial_messages, run_episode
 from cockpit.env.episode import Episode
-from cockpit.verifier import verify
 
 
 def run_episodes_batch(tasks, policy, *, enable_manual=False, max_turns=spec.MAX_TOOL_CALLS):
@@ -32,25 +29,18 @@ def run_episodes_batch(tasks, policy, *, enable_manual=False, max_turns=spec.MAX
         msgs.append(initial_messages(t, em))
         ferr.append(0)
     for _ in range(max_turns):
-        active = [i for i, e in enumerate(eps) if not e.finished]
+        active = [i for i, e in enumerate(eps) if not e.finished and e.budget_left > 0]
         if not active:
             break
         outs = policy.act_batch([msgs[i] for i in active])
         for i, out in zip(active, outs):
             msgs[i].append({"role": "assistant", "content": out["text"], "token_ids": out.get("token_ids")})
-            name, args, perr = parse_tool_call(out["text"])
-            if perr:
-                ferr[i] += 1
-                result = {"ok": False, "code": "FORMAT_ERROR", "data": perr, "retryable": True}
-            else:
-                result = eps[i].call(name, args)
-            msgs[i].append({"role": "tool", "content": json.dumps(result, ensure_ascii=False)})
+            content, bad = execute_turn(eps[i], out["text"])
+            ferr[i] += bad
+            msgs[i].append({"role": "tool", "content": content})
     dt = (time.perf_counter() - t0) / max(1, len(tasks))
     results = []
     for t, ep, m, fe in zip(tasks, eps, msgs, ferr):
-        v = verify(ep)
-        v["format_errors"] = fe
-        v["turns"] = sum(1 for x in m if x["role"] == "assistant")
-        results.append({"task_id": t["id"], "tier": t["tier"], "messages": m, "verify": v,
+        results.append({"task_id": t["id"], "tier": t["tier"], "messages": m, "verify": finalize(ep, m, fe),
                         "seconds": dt, "episode": ep})
     return results

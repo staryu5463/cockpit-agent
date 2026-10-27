@@ -11,7 +11,8 @@ from __future__ import annotations
 import json
 
 from cockpit import spec
-from cockpit.agent.format import format_tool_call
+from cockpit.agent import format as F
+from cockpit.agent.format import format_tool_call, format_turn
 from cockpit.env.catalog import POI_CATEGORIES
 
 
@@ -165,10 +166,95 @@ class ScriptedPolicy:
 
 
 class ExpertPolicy(ScriptedPolicy):
-    """Oracle NLU (reads the private semantic intent) + fair planner."""
+    """Oracle NLU (reads the private semantic intent) + fair planner.
+
+    parallel=True (default: COCKPIT_PARALLEL) groups calls that do not depend on each
+    other into the same turn; see `parallel_schedule`.
+    """
+
+    def __init__(self, parallel=None):
+        self.parallel = F.PARALLEL if parallel is None else parallel
+
+    def reset(self, task):
+        if not self.parallel:
+            return super().reset(task)
+        self._turns, self._k = parallel_schedule(task, self.ops(task)), 0
+
+    def act(self, messages):
+        if not self.parallel:
+            return super().act(messages)
+        turn = self._turns[min(self._k, len(self._turns) - 1)]
+        self._k += 1
+        return {"text": format_turn(turn), "token_ids": None}
 
     def ops(self, task):
         ops = task["semantic"]
         if ops and ops[0]["op"] == "CHAT":
             return ops
         return [{k: v for k, v in op.items() if k not in ("unsupported", "clarify", "dflt")} for op in ops]
+
+
+# --------------------------------------------------------------- parallel schedule
+_NEEDS = {"nav_start": "search_poi", "media_play": "media_search"}
+_NEEDS_STATUS = {"ac_set_temperature", "volume_set"}
+
+
+def _sequential_calls(task, ops):
+    """Run the sequential plan against a scratch episode: [(name, args)] and the episode."""
+    from cockpit.env.episode import Episode
+    ep = Episode(task, enable_manual=task.get("enable_manual", False))
+    gen, calls = plan(ops), []
+    try:
+        name, args = next(gen)
+        while True:
+            calls.append((name, args))
+            res = ep.call(name, args)
+            if ep.finished or ep.budget_left <= 0:
+                break
+            name, args = gen.send(res)
+    except StopIteration:
+        pass
+    return calls, ep
+
+
+def _levels(calls):
+    """Turn index for each call: one after everything it depends on."""
+    lv = []
+    for i, (name, args) in enumerate(calls):
+        deps = []
+        for j in range(i - 1, -1, -1):                     # a retry waits for the failed attempt
+            if calls[j] == (name, args):
+                deps.append(j); break
+        if name in _NEEDS:
+            deps += [j for j in range(i) if calls[j][0] == _NEEDS[name]][-1:]
+        if name in _NEEDS_STATUS:
+            deps += [j for j in range(i) if calls[j][0] == "get_vehicle_status"][-1:]
+        if name == "finish":
+            deps = list(range(i))
+        lv.append(1 + max((lv[j] for j in deps), default=-1))
+    return lv
+
+
+def parallel_schedule(task, ops):
+    """Group the expert's calls into turns by dependency level, finish alone in the last turn.
+
+    The schedule is replayed on a fresh episode and kept only if it reaches exactly the
+    same final state and finish payload as the sequential plan; otherwise (rare order
+    effects) the sequential one-call-per-turn schedule is used.
+    """
+    from cockpit.env.episode import Episode
+    calls, seq_ep = _sequential_calls(task, ops)
+    lv = _levels(calls)
+    turns = []
+    for level in sorted(set(lv)):
+        group = [c for c, l in zip(calls, lv) if l == level]
+        group_nf = [c for c in group if c[0] != "finish"]
+        for k in range(0, len(group_nf), F.MAX_CALLS_PER_TURN):
+            turns.append(group_nf[k:k + F.MAX_CALLS_PER_TURN])
+        turns += [[c] for c in group if c[0] == "finish"]
+    ep = Episode(task, enable_manual=task.get("enable_manual", False))
+    for turn in turns:
+        for name, args in turn:
+            ep.call(name, args)
+    same = ep.state == seq_ep.state and ep.finish_payload == seq_ep.finish_payload and ep.finished == seq_ep.finished
+    return turns if same else [[c] for c in calls]

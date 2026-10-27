@@ -36,6 +36,8 @@ def summarize(results):
             "format_error_rate": round(statistics.fmean(x.get("format_errors", 0) > 0 for x in v), 4),
             "failed_calls_per_ep": round(statistics.fmean(x["n_failed_calls"] for x in v), 3),
             "calls_per_ep": round(statistics.fmean(x["n_calls"] for x in v), 3),
+            "turns_per_ep": round(statistics.fmean(x.get("turns", 0) for x in v), 3),
+            "gen_tokens_per_ep": round(statistics.fmean(x.get("gen_tokens", 0) for x in v), 1),
             "sec_per_ep": round(statistics.fmean(r["seconds"] for r in rs), 4),
         }
     by_tier = defaultdict(list)
