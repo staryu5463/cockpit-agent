@@ -1,0 +1,212 @@
+{
+ "grpo_v2": {
+  "test_id": {
+   "success": 0.95,
+   "turns": 3.28,
+   "calls": 3.28,
+   "false_done": 0.03,
+   "tokens": null
+  },
+  "test_expr": {
+   "success": 0.8333333333333334,
+   "turns": 3.4066666666666667,
+   "calls": 3.4066666666666667,
+   "false_done": 0.15666666666666668,
+   "tokens": null
+  },
+  "test_entity": {
+   "success": 0.93,
+   "turns": 4.4,
+   "calls": 4.4,
+   "false_done": 0.06,
+   "tokens": null
+  },
+  "test_combo": {
+   "success": 0.8633333333333333,
+   "turns": 6.17,
+   "calls": 6.17,
+   "false_done": 0.13,
+   "tokens": null
+  }
+ },
+ "sft_fn_par": {
+  "test_id": {
+   "success": 0.9533333333333334,
+   "turns": 3.28,
+   "calls": 3.28,
+   "false_done": 0.03666666666666667,
+   "tokens": 49.71333333333333
+  },
+  "test_expr": {
+   "success": 0.71,
+   "turns": 3.45,
+   "calls": 3.45,
+   "false_done": 0.24333333333333335,
+   "tokens": 52.986666666666665
+  },
+  "test_entity": {
+   "success": 0.89,
+   "turns": 4.37,
+   "calls": 4.383333333333334,
+   "false_done": 0.11,
+   "tokens": 66.38
+  },
+  "test_combo": {
+   "success": 0.7966666666666666,
+   "turns": 6.126666666666667,
+   "calls": 6.126666666666667,
+   "false_done": 0.20333333333333334,
+   "tokens": 92.12666666666667
+  }
+ },
+ "grpo_fn_base": {
+  "test_id": {
+   "success": 0.95,
+   "turns": 3.2933333333333334,
+   "calls": 3.2933333333333334,
+   "false_done": 0.05,
+   "tokens": 49.803333333333335
+  },
+  "test_expr": {
+   "success": 0.6966666666666667,
+   "turns": 3.41,
+   "calls": 3.41,
+   "false_done": 0.29333333333333333,
+   "tokens": 52.00333333333333
+  },
+  "test_entity": {
+   "success": 0.9533333333333334,
+   "turns": 4.403333333333333,
+   "calls": 4.403333333333333,
+   "false_done": 0.04666666666666667,
+   "tokens": 66.66
+  },
+  "test_combo": {
+   "success": 0.8533333333333334,
+   "turns": 6.136666666666667,
+   "calls": 6.136666666666667,
+   "false_done": 0.14666666666666667,
+   "tokens": 92.38
+  }
+ },
+ "grpo_fn_eff": {
+  "test_id": {
+   "success": 0.9466666666666667,
+   "turns": 2.5566666666666666,
+   "calls": 3.3133333333333335,
+   "false_done": 0.05333333333333334,
+   "tokens": 49.376666666666665
+  },
+  "test_expr": {
+   "success": 0.7066666666666667,
+   "turns": 2.7266666666666666,
+   "calls": 3.5166666666666666,
+   "false_done": 0.28,
+   "tokens": 53.02
+  },
+  "test_entity": {
+   "success": 0.8933333333333333,
+   "turns": 3.1433333333333335,
+   "calls": 4.4,
+   "false_done": 0.10666666666666667,
+   "tokens": 65.46666666666667
+  },
+  "test_combo": {
+   "success": 0.7166666666666667,
+   "turns": 3.19,
+   "calls": 6.123333333333333,
+   "false_done": 0.2833333333333333,
+   "tokens": 89.49
+  }
+ },
+ "sft_js_par": {
+  "test_id": {
+   "success": 0.9166666666666666,
+   "turns": 3.2333333333333334,
+   "calls": 3.236666666666667,
+   "false_done": 0.04666666666666667,
+   "tokens": 84.43
+  },
+  "test_expr": {
+   "success": 0.84,
+   "turns": 3.19,
+   "calls": 3.19,
+   "false_done": 0.14,
+   "tokens": 82.66
+  },
+  "test_entity": {
+   "success": 0.8933333333333333,
+   "turns": 4.3566666666666665,
+   "calls": 4.3566666666666665,
+   "false_done": 0.09666666666666666,
+   "tokens": 112.16333333333333
+  },
+  "test_combo": {
+   "success": 0.7766666666666666,
+   "turns": 6.083333333333333,
+   "calls": 6.083333333333333,
+   "false_done": 0.2,
+   "tokens": 156.09666666666666
+  }
+ },
+ "grpo_js_base": {
+  "test_id": {
+   "success": 0.96,
+   "turns": 3.33,
+   "calls": 3.33,
+   "false_done": 0.03333333333333333,
+   "tokens": 86.83
+  },
+  "test_expr": {
+   "success": 0.8833333333333333,
+   "turns": 3.256666666666667,
+   "calls": 3.256666666666667,
+   "false_done": 0.11333333333333333,
+   "tokens": 84.23
+  },
+  "test_entity": {
+   "success": 0.9133333333333333,
+   "turns": 4.3933333333333335,
+   "calls": 4.3933333333333335,
+   "false_done": 0.07666666666666666,
+   "tokens": 113.59333333333333
+  },
+  "test_combo": {
+   "success": 0.8533333333333334,
+   "turns": 6.173333333333333,
+   "calls": 6.173333333333333,
+   "false_done": 0.14333333333333334,
+   "tokens": 159.22666666666666
+  }
+ },
+ "grpo_js_eff": {
+  "test_id": {
+   "success": 0.9466666666666667,
+   "turns": 2.6266666666666665,
+   "calls": 3.3633333333333333,
+   "false_done": 0.04,
+   "tokens": 86.6
+  },
+  "test_expr": {
+   "success": 0.8633333333333333,
+   "turns": 2.67,
+   "calls": 3.33,
+   "false_done": 0.13666666666666666,
+   "tokens": 84.67333333333333
+  },
+  "test_entity": {
+   "success": 0.9,
+   "turns": 3.1866666666666665,
+   "calls": 4.43,
+   "false_done": 0.09333333333333334,
+   "tokens": 112.61666666666666
+  },
+  "test_combo": {
+   "success": 0.7766666666666666,
+   "turns": 3.26,
+   "calls": 6.176666666666667,
+   "false_done": 0.21666666666666667,
+   "tokens": 155.95
+  }
+ }
+}

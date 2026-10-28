@@ -44,6 +44,10 @@ greedy decoding. Brackets: 95% Wilson interval.
 | SFT (LoRA) | 94.0 [90.7, 96.2] | 80.7 [75.8, 84.7] | 89.0 [85.0, 92.1] | 80.3 [75.5, 84.4] | 17.0% / 16.3% |
 | SFT → DPO | 94.7 [91.5, 96.7] | 80.0 [75.1, 84.1] | 90.7 [86.8, 93.5] | 81.0 [76.2, 85.0] | 18.3% / 16.7% |
 | **SFT → GRPO / DAPO** | **95.0** [91.9, 96.9] | **83.3** [78.7, 87.1] | **93.0** [89.5, 95.4] | **86.3** [82.0, 89.8] | **15.7% / 13.0%** |
+| SFT with 30% parallel-call data → GRPO / DAPO ¹ | 96.0 [93.1, 97.7] | **88.3** [84.2, 91.5] | 91.3 [87.6, 94.0] | 85.3 [80.9, 88.9] | **11.3% / 14.3%** |
+
+¹ From the efficiency experiments below. Against the row above: +5.0 pt on unseen phrasing (p = 0.014),
+no significant difference elsewhere. One seed, and the cause (more varied SFT data) is not isolated yet.
 
 **Paired tests** (McNemar exact test on the tasks where two methods disagree; full table in `results/stats.md`):
 
@@ -64,6 +68,55 @@ What the numbers support, and what they do not:
   on-policy rollouts, and two multi-turn trajectories usually differ in one step, so the sequence-level margin is diluted.
 - On in-distribution and unseen-combination tasks GRPO is **not** significantly better than the rule system.
 - All model rows are a single training seed; the intervals above cover test-set sampling only.
+
+### Efficiency: parallel tool calls and an efficiency reward
+
+**Where the time goes.** On CPU a command costs about `turns × tokens per turn × time per token`. The trained policy
+already uses almost the fewest tool calls (0.15 more than the expert per command on unseen phrasing), so there are no
+wasted steps to remove. The two real levers are tokens per call and the number of turns.
+
+**What was built** (`COCKPIT_PARALLEL=1`, `COCKPIT_CALL_STYLE=json|fn`):
+- Parallel turns: up to 4 independent calls in one turn, results returned together in order. `finish` must be
+  alone, so the agent cannot report "done" before it has seen the results of its own actions.
+- A parallel expert schedule: calls are grouped by dependency level (a search before the navigation that uses its id,
+  a status read before a relative change) and replayed to check the final state matches the sequential plan. The
+  fewest possible turns drop from 6.14 to 3.18 on unseen combinations, with identical success.
+- SFT where 30% of tasks use the parallel schedule, then GRPO with a turn penalty
+  `0.1 × max(0, turns − expert turns)` applied **only to successful episodes**.
+
+Same tasks, paired McNemar tests, one seed (full tables: `results/efficiency.md`):
+
+| Split | Success: no penalty → turn penalty | Turns: no penalty → turn penalty |
+|---|---:|---:|
+| In-distribution | 96.0% → 94.7% (p = 0.45) | 3.33 → 2.63 (**−21%**) |
+| Unseen phrasing | 88.3% → 86.3% (p = 0.24) | 3.26 → 2.67 (**−18%**) |
+| Unseen entity | 91.3% → 90.0% (p = 0.54) | 4.39 → 3.19 (**−27%**) |
+| Unseen combination | 85.3% → **77.7% (p < 0.001)** | 6.17 → 3.26 (**−47%**) |
+
+**Fewer turns did not make the CPU much faster.** llama.cpp Q8_0, 8 threads, first 100 tasks of each split:
+
+| Split | Turns | Tokens per turn | Command P50 | Success |
+|---|---:|---:|---:|---:|
+| Unseen phrasing, no penalty → turn penalty | 3.31 → 2.67 | 25.9 → 32.3 | 1.57 s → 1.61 s | 83% → 84% |
+| Unseen combination, no penalty → turn penalty | 6.12 → 3.33 | 25.7 → 46.4 | 3.62 s → 3.39 s (−6%) | 88% → 75% |
+
+Parallel turns carry the same calls, so the generated tokens barely change, and on a CPU decoding those tokens is
+almost all of the time. Merging turns only saves the per-turn overhead (reading the new tool results, starting a
+generation), which llama.cpp already keeps small by reusing the KV cache. In this benchmark the tools are simulated
+and answer instantly; parallel calls pay off when tools have real latency (a cloud POI search, a vehicle bus
+round-trip), because their waits overlap. That needs a measurement with realistic tool latency before any speed
+claim.
+
+What did not work, and why:
+- **A compact call style** (`ac_set_temperature(zone="driver",value=28)` instead of JSON) cut generated tokens by 40%
+  but lost 13.7 points on unseen phrasings (p < 1e-7), mostly misunderstood requests. Qwen3 was pretrained on JSON
+  tool calls; moving away from that format costs more than the tokens it saves.
+- **A turn penalty on every episode was exploited.** The policy skipped retries after recoverable errors and rushed
+  its choices, trading success for fewer turns (unseen combinations 85.3% → 71.7%). Gating the penalty on success
+  removed most of that loss.
+- **The remaining loss on combinations** comes from wrong choices and from missed failures inside batched results:
+  when one of several results in a turn is an error, the model sometimes does not retry it. Flagging failed calls in
+  batched results is the next fix.
 
 ### On-device latency
 
@@ -136,6 +189,8 @@ Training (needs `models/Qwen3-0.6B`, e.g. `modelscope download --model Qwen/Qwen
 python -m cockpit.train.sft --config configs/sft_qwen3_0.6b.json
 bash scripts/run_rl_pipeline.sh                     # hard-task mining -> GRPO -> DPO -> evaluation (resumable)
 python scripts/stats.py                             # intervals and paired tests
+bash scripts/run_parallel_json_pipeline.sh          # parallel calls + efficiency reward (resumable)
+python scripts/efficiency_stats.py                  # efficiency tables
 ```
 
 On-device deployment (llama.cpp, CPU):
